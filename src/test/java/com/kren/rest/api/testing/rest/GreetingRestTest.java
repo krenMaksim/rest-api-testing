@@ -1,5 +1,6 @@
 package com.kren.rest.api.testing.rest;
 
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.standaloneSetup;
 import static org.hamcrest.Matchers.equalTo;
@@ -37,8 +38,7 @@ public class GreetingRestTest {
     }
 
     @Test
-    void t() {
-
+    void greeting() {
 	standaloneSetup(new GreetingRest());
 
 	given().param("name", "Johan")
@@ -48,7 +48,18 @@ public class GreetingRestTest {
 	       .statusCode(200)
 	       .body("id", equalTo(1))
 	       .body("content", equalTo("Hello, Johan!"));
-
     }
 
+    @Test
+    void greetingJson() {
+	standaloneSetup(new GreetingRest());
+
+	given().param("name", "Johan")
+	       .when()
+	       .get("/greeting")
+	       .then()
+	       .statusCode(200)
+	       .body(matchesJsonSchemaInClasspath("greeting.json"));
+
+    }
 }
