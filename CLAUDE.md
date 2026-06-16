@@ -26,6 +26,10 @@ mvn test -Dtest=GreetingRestTest#greeting
 
 Tests tagged `slow` are excluded by default (surefire config in `pom.xml`).
 
+## Code style
+
+Use IntelliJ IDEA's default Java formatter for all code changes.
+
 ## Test architecture patterns
 
 **MockMVC tests** (`GreetingRestTest`) — annotated with `@SpringBootTest`. Call `RestAssuredMockMvc.webAppContextSetup(wac)` in `@BeforeEach` and `RestAssuredMockMvc.reset()` in `@AfterEach`.
