@@ -1,10 +1,6 @@
 package com.kren.rest.api.testing.rest;
 
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
-import static io.restassured.module.mockmvc.RestAssuredMockMvc.standaloneSetup;
-import static org.hamcrest.Matchers.equalTo;
-
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.context.WebApplicationContext;
 
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.standaloneSetup;
+import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest
 public class GreetingRestTest {
@@ -22,37 +21,36 @@ public class GreetingRestTest {
 
     @BeforeEach
     public void configureMockMvcInstance() {
-	RestAssuredMockMvc.webAppContextSetup(wac);
+        RestAssuredMockMvc.webAppContextSetup(wac);
     }
 
     @AfterEach
     public void restRestAssured() {
-	RestAssuredMockMvc.reset();
+        RestAssuredMockMvc.reset();
     }
 
     @Test
     void greeting() {
-	standaloneSetup(new GreetingRest());
+        standaloneSetup(new GreetingRest());
 
-	given().param("name", "Johan")
-	       .when()
-	       .get("/greeting")
-	       .then()
-	       .statusCode(200)
-	       .body("id", equalTo(1))
-	       .body("content", equalTo("Hello, Johan!"));
+        given().param("name", "Johan")
+                .when()
+                .get("/greeting")
+                .then()
+                .statusCode(200)
+                .body("id", equalTo(1))
+                .body("content", equalTo("Hello, Johan!"));
     }
 
     @Test
     void greetingJson() {
-	standaloneSetup(new GreetingRest());
+        standaloneSetup(new GreetingRest());
 
-	given().param("name", "Johan")
-	       .when()
-	       .get("/greeting")
-	       .then()
-	       .statusCode(200)
-	       .body(matchesJsonSchemaInClasspath("greeting.json"));
-
+        given().param("name", "Johan")
+                .when()
+                .get("/greeting")
+                .then()
+                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("greeting.json"));
     }
 }
